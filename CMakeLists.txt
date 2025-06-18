@@ -10,7 +10,30 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-find_package(legate REQUIRED)
+# Paths to Legate things
+find_library(LEGATE_LIBRARY
+  NAMES legate
+  PATHS "${LEGATE_PREFIX}/lib"
+  NO_DEFAULT_PATH
+)
+find_path(LEGATE_INCLUDE_DIR
+  NAMES legate.h                        # pick one of the top-level headers here
+  PATHS "${LEGATE_PREFIX}/include/legate"
+  NO_DEFAULT_PATH
+)
+
+if (NOT LEGATE_LIBRARY)
+  message(FATAL_ERROR "Could not find liblegate.so under ${LEGATE_PREFIX}/lib")
+endif()
+if (NOT LEGATE_INCLUDE_DIR)
+  message(FATAL_ERROR "Could not find Legate headers under ${LEGATE_PREFIX}/include")
+endif()
+
+add_library(legate::legate SHARED IMPORTED GLOBAL)
+set_target_properties(legate::legate PROPERTIES
+  IMPORTED_LOCATION             "${LEGATE_LIBRARY}"
+  INTERFACE_INCLUDE_DIRECTORIES "${LEGATE_INCLUDE_DIR}"
+)
 
 # CxxWrap Stuff
 find_package(JlCxx)
