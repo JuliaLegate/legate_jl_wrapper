@@ -10,6 +10,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
+if (NOT DEFINED LEGATE_PREFIX)
+  message(FATAL_ERROR "You must set -DLEGATE_PREFIX to your Legate install root")
+endif()
+
 # Paths to Legate things
 find_library(LEGATE_LIBRARY
   NAMES legate
@@ -29,10 +33,18 @@ if (NOT LEGATE_INCLUDE_DIR)
   message(FATAL_ERROR "Could not find Legate headers under ${LEGATE_PREFIX}/include")
 endif()
 
+set(LEGATE_DEPS_INCLUDE_DIR "${LEGATE_PREFIX}/include/legate/deps")
+if (NOT IS_DIRECTORY "${LEGATE_DEPS_INCLUDE_DIR}")
+  message(FATAL_ERROR
+    "Could not find Legate deps headers under ${LEGATE_DEPS_INCLUDE_DIR}")
+endif()
+
 add_library(legate::legate SHARED IMPORTED GLOBAL)
 set_target_properties(legate::legate PROPERTIES
   IMPORTED_LOCATION             "${LEGATE_LIBRARY}"
-  INTERFACE_INCLUDE_DIRECTORIES "${LEGATE_INCLUDE_DIR}"
+  INTERFACE_INCLUDE_DIRECTORIES 
+    "${LEGATE_INCLUDE_DIR}"
+    "${LEGATE_DEPS_INCLUDE_DIR}"
 )
 
 # CxxWrap Stuff
