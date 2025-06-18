@@ -47,9 +47,8 @@ set(SOURCES
     src/warpper.cpp
 )
 
-set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${LegateWrapperVersion})
-
 add_library(${LIBRARY_NAME} SHARED ${SOURCES})
+set_target_properties(${LIBRARY_NAME} PROPERTIES VERSION ${LegateWrapperVersion})
 
 target_link_libraries(${LIBRARY_NAME} PRIVATE legate::legate JlCxx::cxxwrap_julia JlCxx::cxxwrap_julia_stl)
 target_include_directories(${LIBRARY_NAME} PRIVATE include)
