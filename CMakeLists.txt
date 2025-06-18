@@ -44,7 +44,7 @@ message(STATUS "Found JlCxx at ${JlCxx_location}")
 
 set(SOURCES
     src/types.cpp
-    src/warpper.cpp
+    src/wrapper.cpp
 )
 
 add_library(${LIBRARY_NAME} SHARED ${SOURCES})
