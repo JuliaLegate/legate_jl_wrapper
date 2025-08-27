@@ -160,7 +160,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
         .method("nullable", &LogicalArray::nullable);
 
     mod.add_type<Variable>("Variable");
-    mod.add_type<Constraint>("Constraint")
+    mod.add_type<Constraint>("Constraint");
 
     mod.add_type<AutoTask>("AutoTask")
         .method("add_input", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_input))
@@ -178,7 +178,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
       .method("submit_auto_task", [](Runtime* rt, AutoTask& task) { return rt->submit(std::move(task));})
       .method("submit_manual_task", [](Runtime* rt, ManualTask& task) {return rt->submit(std::move(task));});
 
-    mod.method("allign", &legate::allign);
+    mod.method("align", &legate::align);
     mod.method("get_runtime", [] { return Runtime::get_runtime(); });
     mod.method("create_unbound_array",
       [](const Type& ty, std::uint32_t dim = 1, bool nullable = false) {
