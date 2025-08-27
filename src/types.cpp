@@ -22,10 +22,6 @@
 #include "legion/legion_config.h"
 
 
-legate::Scalar string_to_scalar(std::string str) {
-   return legate::Scalar(str);
-}
-
 void wrap_type_enums(jlcxx::Module& mod) {
 
     auto lt = mod.add_type<legate::Type>("LegateType");
@@ -54,9 +50,7 @@ void wrap_type_enums(jlcxx::Module& mod) {
   
     lt.method("code", &legate::Type::code);
     lt.method("to_string", &legate::Type::to_string);
-
-    mod.method("string_to_scalar", &string_to_scalar);
-  }
+}
 
   void wrap_type_getters(jlcxx::Module& mod) {
   mod.method("bool_", &legate::bool_);

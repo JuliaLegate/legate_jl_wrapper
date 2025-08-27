@@ -64,6 +64,10 @@ struct WrapDefault {
     }
   };
 
+legate::Scalar string_to_scalar(std::string str) {
+   return legate::Scalar(str);
+}
+
 
 JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
     using jlcxx::ParameterList;
@@ -105,7 +109,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
         .method("set", [](std::vector<legate::Scalar>& v, std::size_t i, const legate::Scalar& x) {
         v.at(i) = x;
         });
-
+    mod.method("string_to_scalar", &string_to_scalar);
 
     mod.add_type<Parametric<TypeVar<1>>>("StdOptional")
       .apply<std::optional<legate::Type>, std::optional<int64_t>>(WrapDefault());
