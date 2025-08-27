@@ -178,7 +178,11 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
       .method("submit_auto_task", [](Runtime* rt, AutoTask& task) { return rt->submit(std::move(task));})
       .method("submit_manual_task", [](Runtime* rt, ManualTask& task) {return rt->submit(std::move(task));});
 
-    mod.method("align", static_cast<Variable (*)(const Variable&, const Variable&)>(&legate::align));
+    mod.method("align", [](const Variable& a, const Variable& b) {
+      return legate::align(a, b);
+    });
+
+
     mod.method("get_runtime", [] { return Runtime::get_runtime(); });
     mod.method("create_unbound_array",
       [](const Type& ty, std::uint32_t dim = 1, bool nullable = false) {
