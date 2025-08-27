@@ -1,7 +1,0 @@
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/legate_jl_wrapper.dir
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/edit_cache.dir
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/rebuild_cache.dir
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/list_install_components.dir
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/install.dir
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/install/local.dir
-/home/david/.julia/packages/Legate/rKekF/deps/legate_jl_wrapper_src/build/CMakeFiles/install/strip.dir
