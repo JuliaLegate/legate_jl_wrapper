@@ -161,9 +161,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
 
     mod.add_type<Variable>("Variable");
     mod.add_type<std::vector<Variable>>("VectorVariable")
-      .method("push_back", [](std::vector<Variable>& v, legate::Variable s) {
-        v.push_back(s);
-    });
+      .method("push_back", static_cast<void (std::vector<Variable>::*)(const Variable&)>(&std::vector<Variable>::push_back));
 
     mod.add_type<AutoTask>("AutoTask")
         .method("add_input", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_input))
