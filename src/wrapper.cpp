@@ -161,7 +161,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
 
     mod.add_type<Variable>("Variable");
     mod.add_type<std::vector<Variable>>("VectorVariable")
-      .method("push_back", [](std::vector<Variable>& v, const Variable& s) { v.push_back(s); })
+      .method("push_back", [](std::vector<Variable>& v, const Variable& s) { v.push_back(s); });
 
 
     mod.add_type<AutoTask>("AutoTask")
