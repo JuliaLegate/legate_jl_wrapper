@@ -165,7 +165,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
     mod.add_type<AutoTask>("AutoTask")
         .method("add_input", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_input))
         .method("add_output", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_output))
-        .method("add_scalar", static_cast<void (AutoTask::*)(const Scalar&)>(&AutoTask::add_scalar_arg)); 
+        .method("add_scalar", static_cast<void (AutoTask::*)(const Scalar&)>(&AutoTask::add_scalar_arg))
         .method("add_constraint", static_cast<void (AutoTask::*)(const Constraint&)>(&AutoTask::add_constraint)); 
               
     mod.add_type<ManualTask>("ManualTask")
@@ -178,7 +178,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
       .method("submit_auto_task", [](Runtime* rt, AutoTask& task) { return rt->submit(std::move(task));})
       .method("submit_manual_task", [](Runtime* rt, ManualTask& task) {return rt->submit(std::move(task));});
 
-    mod.method("align", &legate::align);
+    mod.method("align", static_cast<Variable (*)(const Variable&, const Variable&)>(&legate::align));
     mod.method("get_runtime", [] { return Runtime::get_runtime(); });
     mod.method("create_unbound_array",
       [](const Type& ty, std::uint32_t dim = 1, bool nullable = false) {
