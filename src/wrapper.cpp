@@ -168,7 +168,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
     mod.add_type<AutoTask>("AutoTask")
         .method("add_input", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_input))
         .method("add_output", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_output))
-        .method("add_scalar", static_cast<Variable (AutoTask::*)(const Scalar&)>(&AutoTask::add_scalar_arg));
+        .method("add_scalar", static_cast<void (AutoTask::*)(const Scalar&)>(&AutoTask::add_scalar_arg));
               
     mod.add_type<ManualTask>("ManualTask")
         .method("add_input", static_cast<void (ManualTask::*)(LogicalStore)>(&ManualTask::add_input))
