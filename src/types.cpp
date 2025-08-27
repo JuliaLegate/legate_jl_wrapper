@@ -55,7 +55,7 @@ void wrap_type_enums(jlcxx::Module& mod) {
   
     lt.method("code", &legate::Type::code);
     lt.method("to_string", &legate::Type::to_string);
-    lt.method("string_to_scalar" &string_to_scalar);
+    lt.method("string_to_scalar", &string_to_scalar);
   }
 
   void wrap_type_getters(jlcxx::Module& mod) {
