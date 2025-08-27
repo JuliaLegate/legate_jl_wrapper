@@ -168,12 +168,12 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
     mod.add_type<AutoTask>("AutoTask")
         .method("add_input", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_input))
         .method("add_output", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_output))
-        .method("add_scalar", static_cast<Variable (AutoTask::*)(Scalar)>(&AutoTask::add_scalar_arg));
+        .method("add_scalar", static_cast<Variable (AutoTask::*)(const Scalar&)>(&AutoTask::add_scalar_arg));
               
     mod.add_type<ManualTask>("ManualTask")
         .method("add_input", static_cast<void (ManualTask::*)(LogicalStore)>(&ManualTask::add_input))
         .method("add_output", static_cast<void (ManualTask::*)(LogicalStore)>(&ManualTask::add_output))
-        .method("add_scalar", static_cast<void (ManualTask::*)(Scalar)>(&ManualTask::add_scalar_arg));
+        .method("add_scalar", static_cast<void (ManualTask::*)(const Scalar&)>(&ManualTask::add_scalar_arg));
 
     mod.add_type<Runtime>("Runtime")
       .method("create_auto_task", [](Runtime* rt, Library lib, LocalTaskID id) { return rt->create_task(lib, id); })
