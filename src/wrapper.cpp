@@ -64,6 +64,10 @@ struct WrapDefault {
     }
   };
 
+legate::Scalar string_to_scalar(std::string str) {
+   return legate::Scalar(str);
+}
+
 
 JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
     using jlcxx::ParameterList;
@@ -105,7 +109,7 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
         .method("set", [](std::vector<legate::Scalar>& v, std::size_t i, const legate::Scalar& x) {
         v.at(i) = x;
         });
-
+    mod.method("string_to_scalar", &string_to_scalar);
 
     mod.add_type<Parametric<TypeVar<1>>>("StdOptional")
       .apply<std::optional<legate::Type>, std::optional<int64_t>>(WrapDefault());
@@ -160,19 +164,29 @@ JLCXX_MODULE define_julia_module(jlcxx::Module& mod) {
         .method("nullable", &LogicalArray::nullable);
 
     mod.add_type<Variable>("Variable");
+    mod.add_type<Constraint>("Constraint");
 
     mod.add_type<AutoTask>("AutoTask")
         .method("add_input", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_input))
-        .method("add_output", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_output));
+        .method("add_output", static_cast<Variable (AutoTask::*)(LogicalArray)>(&AutoTask::add_output))
+        .method("add_scalar", static_cast<void (AutoTask::*)(const Scalar&)>(&AutoTask::add_scalar_arg))
+        .method("add_constraint", static_cast<void (AutoTask::*)(const Constraint&)>(&AutoTask::add_constraint)); 
+              
     mod.add_type<ManualTask>("ManualTask")
         .method("add_input", static_cast<void (ManualTask::*)(LogicalStore)>(&ManualTask::add_input))
-        .method("add_output", static_cast<void (ManualTask::*)(LogicalStore)>(&ManualTask::add_output));
+        .method("add_output", static_cast<void (ManualTask::*)(LogicalStore)>(&ManualTask::add_output))
+        .method("add_scalar", static_cast<void (ManualTask::*)(const Scalar&)>(&ManualTask::add_scalar_arg));
 
     mod.add_type<Runtime>("Runtime")
       .method("create_auto_task", [](Runtime* rt, Library lib, LocalTaskID id) { return rt->create_task(lib, id); })
       .method("submit_auto_task", [](Runtime* rt, AutoTask& task) { return rt->submit(std::move(task));})
       .method("submit_manual_task", [](Runtime* rt, ManualTask& task) {return rt->submit(std::move(task));});
-          
+
+    mod.method("align", [](const Variable& a, const Variable& b) {
+      return legate::align(a, b);
+    });
+
+
     mod.method("get_runtime", [] { return Runtime::get_runtime(); });
     mod.method("create_unbound_array",
       [](const Type& ty, std::uint32_t dim = 1, bool nullable = false) {

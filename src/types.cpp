@@ -21,6 +21,7 @@
 #include "types.h"
 #include "legion/legion_config.h"
 
+
 void wrap_type_enums(jlcxx::Module& mod) {
 
     auto lt = mod.add_type<legate::Type>("LegateType");
@@ -48,8 +49,8 @@ void wrap_type_enums(jlcxx::Module& mod) {
     mod.set_const("LIST", legate::Type::Code::LIST);
   
     lt.method("code", &legate::Type::code);
-    // lt.method("to_string", &legate::Type::to_string); // ABI issue :)
-  }
+    lt.method("to_string", &legate::Type::to_string);
+}
 
   void wrap_type_getters(jlcxx::Module& mod) {
   mod.method("bool_", &legate::bool_);
